@@ -1,0 +1,15 @@
+load
+10
+time
+find
+aaaa
+time
+find
+gggg
+time
+find
+tttt
+time
+find
+zzzz
+exit
