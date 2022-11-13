@@ -149,12 +149,14 @@ zeichnet sich hier kaum ab.
 
 ### Randomisierte Eingabe
 
+TODO: letzten beiden Zeilen stimmen nicht
+
 | Anzahl der Wörter | BST      | Treap   | TreapRec |
 | ----------------- | -------- | ------- | -------- |
 | 10                | 144.25   | 238.75  | 162.25   |
 | 100               | 205      | 307.5   | 263.25   |
 | 1000              | 537.75   | 664.25  | 554.5    |
-| 10000 xx          | 119493.5 | 847     | 928.25   |
+| 10000             | 119493.5 | 847     | 928.25   |
 | 58110             | 869587   | 2228.75 | 2204     |
 
 ### Vergleich Treap & TreapRec bei 50.000.000 Einträgen
