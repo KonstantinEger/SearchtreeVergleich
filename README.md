@@ -165,8 +165,8 @@ TODO: letzten beiden Zeilen stimmen nicht
 | ------- | -------- |
 | 87323ns | 4501ns   |
 
-Dieses Ergebnis zeigt, meine iterative Implementierung ist deutlich langsamer
-als die rekursive. Ich erkläre mir dieses Ergebnis durch die zur Laufzeit
+Dieses Ergebnis zeigt, dass meine iterative Implementierung deutlich langsamer
+als die rekursive ist. Ich erkläre mir dieses Ergebnis durch die zur Laufzeit
 durchgeführten Ownership-Checks von `std::cell::RefCell` und dem Clonen von
 `std::rc::Rc`'s, welche durch `unsafe` umgangen werden können, allerdings leicht
 Undefined Behaviour verursachen könnte. Möglicherweise ist meine Vorgehensweise
