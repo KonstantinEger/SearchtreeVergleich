@@ -149,12 +149,14 @@ zeichnet sich hier kaum ab.
 
 ### Randomisierte Eingabe
 
+TODO: letzten beiden Zeilen stimmen nicht
+
 | Anzahl der Wörter | BST      | Treap   | TreapRec |
 | ----------------- | -------- | ------- | -------- |
 | 10                | 144.25   | 238.75  | 162.25   |
 | 100               | 205      | 307.5   | 263.25   |
 | 1000              | 537.75   | 664.25  | 554.5    |
-| 10000 xx          | 119493.5 | 847     | 928.25   |
+| 10000             | 119493.5 | 847     | 928.25   |
 | 58110             | 869587   | 2228.75 | 2204     |
 
 ### Vergleich Treap & TreapRec bei 50.000.000 Einträgen
@@ -163,8 +165,8 @@ zeichnet sich hier kaum ab.
 | ------- | -------- |
 | 87323ns | 4501ns   |
 
-Dieses Ergebnis zeigt, meine iterative Implementierung ist deutlich langsamer
-als die rekursive. Ich erkläre mir dieses Ergebnis durch die zur Laufzeit
+Dieses Ergebnis zeigt, dass meine iterative Implementierung deutlich langsamer
+als die rekursive ist. Ich erkläre mir dieses Ergebnis durch die zur Laufzeit
 durchgeführten Ownership-Checks von `std::cell::RefCell` und dem Clonen von
 `std::rc::Rc`'s, welche durch `unsafe` umgangen werden können, allerdings leicht
 Undefined Behaviour verursachen könnte. Möglicherweise ist meine Vorgehensweise
