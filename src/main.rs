@@ -1,19 +1,18 @@
 mod wordlists;
 
-use rand::prelude::*;
 use std::io::{self, prelude::*};
 use std::time::Instant;
 use treap_rust::{bst::BST, treap::Treap, Treap as TreapRec};
 use wordlists::*;
 
 fn main() {
-    let mut rng = rand::thread_rng();
-    let mut treap = Treap::<String, i32, String>::new();
-    let mut treap_rec = TreapRec::<String, i32, String>::new();
+    let rng = fastrand::Rng::new();
+    let mut treap = treap_rust::treap_vec::Treap::<i32, i32, i32>::new();
+    let mut treap_rec = TreapRec::<i32, i32, i32>::new();
     let mut bst = BST::<String, String>::new();
     let mut timer = TimingContext::new();
 
-    let mut words_iter = WORDS_UNSORTED.into_iter();
+    let mut words_iter = 1..100_000_000;
 
     loop {
         let command =
@@ -27,13 +26,14 @@ fn main() {
                 let num = prompt_user("How many to load: ");
                 let mut num = num.parse::<usize>().unwrap();
                 let mut count = 0;
-                while let Some(&word) = words_iter.next() {
-                    let weight = rng.gen();
-                    let word = word.to_owned();
+                let start = Instant::now();
+                while let Some(word) = words_iter.next() {
+                    let weight = rng.i32(..);
+                    // let word = word.to_owned();
                     // let rword: String = word.chars().rev().collect();
-                    treap.insert(word.clone(), weight, word.clone());
-                    treap_rec.insert(word.clone(), weight, word.clone());
-                    bst.insert(word.clone(), word.clone());
+                    treap.insert(word, weight, word);
+                    // treap_rec.insert(word.clone(), weight, word.clone());
+                    // bst.insert(word.clone(), word.clone());
                     // treap.insert(rword.clone(), weight, rword.clone());
                     // treap_rec.insert(rword.clone(), weight, rword.clone());
                     // bst.insert(rword.clone(), rword.clone());
@@ -43,26 +43,29 @@ fn main() {
                         break;
                     }
                 }
+                let time = Instant::now() - start;
+                dbg!(time.as_millis());
                 eprintln!(">> Loaded {} words", count);
             }
             "insert" => {
                 let english = prompt_user("Enter english word: ");
-                let weight = rng.gen();
-                let german = prompt_user("Enter german word: ");
-                let (e2, g2) = (english.clone(), german.clone());
-                let (e3, g3) = (english.clone(), german.clone());
+                let english = english.parse().unwrap();
+                let weight = rng.i32(..);
+                //let german = prompt_user("Enter german word: ");
+                //let (e2, g2) = (english.clone(), german.clone());
+                //let (e3, g3) = (english.clone(), german.clone());
 
                 timer.start();
-                treap.insert(english, weight, german);
+                treap.insert(english, weight, english);
                 timer.evaluate("Treap");
 
-                timer.start();
-                treap_rec.insert(e2, weight, g2);
-                timer.evaluate("TreapRec");
+                // timer.start();
+                // treap_rec.insert(e2, weight, g2);
+                // timer.evaluate("TreapRec");
 
-                timer.start();
-                bst.insert(e3, g3);
-                timer.evaluate("BST");
+                // timer.start();
+                // bst.insert(e3, g3);
+                // timer.evaluate("BST");
 
                 timer.deactivate();
             }
@@ -71,41 +74,41 @@ fn main() {
                 break;
             }
             "print" => {
-                eprintln!("{:?}", &treap);
+                eprintln!("{:#?}", &treap);
                 dbg!(&treap_rec);
                 dbg!(&bst);
             }
-            "find" => {
-                let english = prompt_user("> Enter english word to find: ");
+            // "find" => {
+            //     let english = prompt_user("> Enter english word to find: ");
 
-                timer.start();
-                let result = treap.find(&english);
-                timer.evaluate("Treap");
-                if let Some(german) = result {
-                    println!("true {}", &*german);
-                } else {
-                    println!("false");
-                }
+            //     timer.start();
+            //     let result = treap.find(&english);
+            //     timer.evaluate("Treap");
+            //     if let Some(german) = result {
+            //         println!("true {}", &*german);
+            //     } else {
+            //         println!("false");
+            //     }
 
-                timer.start();
-                let result = treap_rec.find(&english);
-                timer.evaluate("TreapRec");
-                if let Some(german) = result {
-                    println!("true {}", german);
-                } else {
-                    println!("false");
-                }
+            //     timer.start();
+            //     let result = treap_rec.find(&english);
+            //     timer.evaluate("TreapRec");
+            //     if let Some(german) = result {
+            //         println!("true {}", german);
+            //     } else {
+            //         println!("false");
+            //     }
 
-                timer.start();
-                let result = bst.find(&english);
-                timer.evaluate("BST");
-                if let Some(german) = result {
-                    println!("true {}", german);
-                } else {
-                    println!("false");
-                }
-                timer.deactivate();
-            }
+            //     timer.start();
+            //     let result = bst.find(&english);
+            //     timer.evaluate("BST");
+            //     if let Some(german) = result {
+            //         println!("true {}", german);
+            //     } else {
+            //         println!("false");
+            //     }
+            //     timer.deactivate();
+            // }
             _ => println!(">> ERR: unrecognized command"),
         }
     }

@@ -1,5 +1,6 @@
 pub mod bst;
 pub mod treap;
+pub mod treap_vec;
 
 #[derive(Debug)]
 pub struct Treap<K, W, V>(TreapNode<K, W, V>);
